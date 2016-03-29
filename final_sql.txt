@@ -1,0 +1,107 @@
+--
+-- MySQL 5.6.21
+-- Thu, 20 Nov 2014 22:49:08 +0000
+--
+
+CREATE TABLE `account` (
+   `Account_id` int(10) not null,
+   `oil_reserves` float,
+   `cash_reserves` float,
+   `barrel_history` float,
+   `Client_id` int(10),
+   PRIMARY KEY (`Account_id`),
+   KEY `client_fk1` (`Client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `address` (
+   `Street` varchar(20) not null,
+   `City` varchar(15),
+   `State` varchar(15),
+   `Zip` int(10),
+   `Apt_no` int(7) not null default '0',
+   `Client_id` int(10),
+   PRIMARY KEY (`Street`,`Apt_no`),
+   KEY `fk` (`Client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `client` (
+   `Client_id` int(11) not null,
+   `Fname` varchar(20),
+   `Lname` varchar(20),
+   `Phn_no` bigint(15),
+   `email_id` varchar(30),
+   `cell_no` bigint(15),
+   `role` varchar(7),
+   PRIMARY KEY (`Client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `client_login` (
+   `email_id` varchar(30) not null,
+   `password` varchar(20),
+   `Client_id` int(10),
+   PRIMARY KEY (`email_id`),
+   KEY `client_fk12` (`Client_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `manager` (
+   `m_id` int(11) not null default '0',
+   `m_username` varchar(20),
+   `password` varchar(15),
+   PRIMARY KEY (`m_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `trader` (
+   `Trader_id` int(10) not null,
+   `T_name` varchar(15),
+   `T_email` varchar(30),
+   `Tphn_no` bigint(15),
+   `Comm_oil` float,
+   `Comm_cash` float,
+   PRIMARY KEY (`Trader_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `trader_login` (
+   `t_username` varchar(20) not null,
+   `Password` varchar(20),
+   `Trader_id` int(10),
+   PRIMARY KEY (`t_username`),
+   KEY `trader_fk5` (`Trader_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `transact_log` (
+   `Transact_id` int(13),
+   `Trader_id` int(10),
+   `Client_id` int(10),
+   `Amt_paid` int(13),
+   `T_date` date,
+   `Tid` int(10) not null,
+   KEY `trans_fk` (`Transact_id`),
+   KEY `client_fk4` (`Client_id`),
+   KEY `trade_fk4` (`Trader_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+
+CREATE TABLE `transactions` (
+   `Client_id` int(10),
+   `Transact_id` int(13) not null,
+   `Trader_id` int(10),
+   `oil_qty` int(10),
+   `Amount` int(13),
+   `Status` varchar(13),
+   `Comm_type` varchar(10),
+   `Comm_paid` varchar(10),
+   `Trans_date` date,
+   `Amt_Paid` varchar(10),
+   `Amt_left` varchar(10),
+   `Transact_type` varchar(10),
+   PRIMARY KEY (`Transact_id`),
+   KEY `client_fk2` (`Client_id`),
+   KEY `trade_fk1` (`Trader_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
